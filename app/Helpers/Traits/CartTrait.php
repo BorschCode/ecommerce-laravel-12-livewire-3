@@ -26,27 +26,15 @@ trait CartTrait
         $this->js("toastr.error('Oops! Something went wrong!')");
     }
 
+    public function removeFromCart(int $productId): void
+    {
+        if (Cart::removeProductFromCart($productId)) {
+            $this->js("toastr.success('Product removed from cart successfully')");
+            $this->dispatch(self::EVENT_NAME);
+
+            return;
+        }
+
+        $this->js("toastr.error('Oops! Something went wrong!')");
+    }
 }
-
-/*
-
-'cart' => [
-    1 => [
-        'title' => '',
-        'slug' => '',
-        'image' => '',
-        'price' => '',
-        'old_price' => '',
-        'quantity' => 4,
-    ],
-    5 => [
-        'title' => '',
-        'slug' => '',
-        'image' => '',
-        'price' => '',
-        'old_price' => '',
-        'quantity' => 3,
-    ],
-]
-
- * */

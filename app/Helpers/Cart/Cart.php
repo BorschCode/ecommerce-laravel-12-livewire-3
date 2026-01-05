@@ -6,7 +6,6 @@ use App\Models\Product;
 
 class Cart
 {
-
     // add product to cart
     public static function add2Cart(int $productId, int $quantity = 1): bool
     {
@@ -29,10 +28,21 @@ class Cart
             session(["cart.{$productId}" => $new_product]);
             $added = true;
         }
+
         return $added;
     }
 
     // remove product from cart
+    public static function removeProductFromCart(int $productId): bool
+    {
+        if (self::hasProductInCart($productId)) {
+            session()->forget("cart.$productId");
+
+            return true;
+        }
+
+        return false;
+    }
 
     // get cart
     public static function getCart(): array
@@ -43,6 +53,16 @@ class Cart
     // clear cart
 
     // get cart total sum
+    public static function getCartTotal(): int
+    {
+        $total = 0;
+        $cart = self::getCart();
+        foreach ($cart as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        return $total;
+    }
 
     // get cart items
     public static function getCartQuantityItems(): int
@@ -54,6 +74,7 @@ class Cart
     public static function getCartQuantityTotal(): int
     {
         $cart = self::getCart();
+
         return array_sum(array_column($cart, 'quantity'));
     }
 
