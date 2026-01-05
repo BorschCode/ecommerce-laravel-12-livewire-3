@@ -15,7 +15,14 @@ trait CartTrait
         if ($quantity < 1) {
             $quantity = 1;
         }
-        return Cart::add2Cart($productId, $quantity);
+        if (Cart::add2Cart($productId, $quantity)) {
+            $this->js("toastr.success('Product added to cart successfully')");
+            $this->dispatch('cart-updated');
+
+            return;
+        }
+
+        $this->js("toastr.error('Oops! Something went wrong!')");
     }
 
 }
