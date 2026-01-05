@@ -6,6 +6,7 @@ use App\Helpers\Cart\Cart;
 
 trait CartTrait
 {
+    public const string EVENT_NAME = 'cart-updated';
 
     public int $quantity = 1;
 
@@ -17,7 +18,7 @@ trait CartTrait
         }
         if (Cart::add2Cart($productId, $quantity)) {
             $this->js("toastr.success('Product added to cart successfully')");
-            $this->dispatch('cart-updated');
+            $this->dispatch(self::EVENT_NAME);
 
             return;
         }
