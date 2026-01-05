@@ -2,6 +2,8 @@
 
 namespace App\Helpers\Traits;
 
+use App\Helpers\Cart\Cart;
+
 trait CartTrait
 {
 
@@ -9,7 +11,11 @@ trait CartTrait
 
     public function add2Cart(int $productId, $quantity = false)
     {
-        dump($productId);
+        $quantity = $quantity ? $this->quantity : 1;
+        if ($quantity < 1) {
+            $quantity = 1;
+        }
+        return Cart::add2Cart($productId, $quantity);
     }
 
 }
