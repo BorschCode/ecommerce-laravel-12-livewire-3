@@ -2,19 +2,31 @@
 
 namespace App\Livewire;
 
+use App\Helpers\Traits\CartTrait;
 use App\Models\Product;
-use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class HomeComponent extends Component
 {
-    public function render(): View
+
+    use CartTrait;
+
+    public function render()
     {
-        $hits_products = Product::whereIsHit(true)->orderBy('id', 'desc')->limit(4)->get();
-        $new_products = Product::whereIsNew(true)->orderBy('id', 'desc')->limit(8)->get();
+        $hits_products = Product::query()
+            ->orderBy('id', 'desc')
+            ->where('is_hit', '=', 1)
+            ->limit(4)
+            ->get();
+        $new_products = Product::query()
+            ->orderBy('id', 'desc')
+            ->where('is_new', '=', 1)
+            ->limit(8)
+            ->get();
+
         return view('livewire.home-component', [
             'hits_products' => $hits_products,
-            'new_products' => $new_products
+            'new_products' => $new_products,
         ]);
     }
 }
