@@ -6,6 +6,7 @@ use App\Helpers\Container;
 
 class Category
 {
+
     public static string $tpl;
 
     public static function getMenu(string $tpl, string $cacheKey = '')
@@ -17,10 +18,13 @@ class Category
                 return $menu_html;
             }
         }
-        $categories = self::getCategories();
-        $categories_tree = self::getTree($categories);
-
-        return $categories_tree;
+        $categories_data = self::getCategories();
+        $categories_tree = self::getTree($categories_data);
+        $menu_html = self::getHtml($categories_tree);
+        if ($cacheKey) {
+            cache([$cacheKey => $menu_html], now()->addDay());
+        }
+        return $menu_html;
     }
 
     public static function getTree($data): array
@@ -48,20 +52,22 @@ class Category
 
     public static function item2Tpl($item, $tab, $id): string
     {
-        ob_start();
-        echo view(self::$tpl, ['item' => $item, 'tab' => $tab, 'id' => $id]);
-        return ob_get_clean();
+//        ob_start();
+//        echo view(self::$tpl, ['item' => $item, 'tab' => $tab, 'id' => $id]);
+//        return ob_get_clean();
+        return view(self::$tpl, compact('item', 'tab', 'id'))->render();
+
     }
 
     public static function getCategories()
     {
-        $categories = Container::get('categories_data');
-        if (!$categories) {
-            $categories = \App\Models\Category::all()->keyBy('id')->toArray();
-            Container::set('categories_data', $categories);
+        $categories_data = Container::get('categories_data');
+        if (!$categories_data) {
+            $categories_data = \App\Models\Category::all()->keyBy('id')->toArray();
+            Container::set('categories_data', $categories_data);
         }
 
-        return $categories;
+        return $categories_data;
     }
 
 }
