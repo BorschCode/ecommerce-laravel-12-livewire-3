@@ -30,14 +30,13 @@ class Category
     public static function getTree($data): array
     {
         $categories_tree = [];
-        foreach ($data as $id => &$category) {
-            if (!$category['parent_id']) {
-                $categories_tree[$id] = &$category;
-                continue;
+        foreach ($data as $id => &$node) {
+            if (!$node['parent_id']) {
+                $categories_tree[$id] = &$node;
+            } else {
+                $data[$node['parent_id']]['children'][$id] = &$node;
             }
-            $categories_tree[$category['parent_id']]['children'][$id] = &$category;
         }
-
         return $categories_tree;
     }
 
@@ -52,11 +51,9 @@ class Category
 
     public static function item2Tpl($item, $tab, $id): string
     {
-//        ob_start();
-//        echo view(self::$tpl, ['item' => $item, 'tab' => $tab, 'id' => $id]);
-//        return ob_get_clean();
-        return view(self::$tpl, compact('item', 'tab', 'id'))->render();
-
+        ob_start();
+        echo view(self::$tpl, ['item' => $item, 'tab' => $tab, 'id' => $id]);
+        return ob_get_clean();
     }
 
     public static function getCategories()
@@ -66,8 +63,20 @@ class Category
             $categories_data = \App\Models\Category::all()->keyBy('id')->toArray();
             Container::set('categories_data', $categories_data);
         }
-
         return $categories_data;
+    }
+
+    public static function getIds(int $category_id): string
+    {
+        $categories = self::getCategories();
+        $ids = '';
+        foreach ($categories as $category) {
+            if ($category['parent_id'] == $category_id) {
+                $ids .= $category['id'] . ',';
+                $ids .= self::getIds($category['id']);
+            }
+        }
+        return $ids;
     }
 
 }
