@@ -1,8 +1,3 @@
-<?php
-/**
- * @var \App\Models\Product $product
- */
-?>
 <div class="product-card">
     <div class="product-card-offer">
         @if($product->is_hit)

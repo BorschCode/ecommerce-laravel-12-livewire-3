@@ -6,6 +6,7 @@ use App\Models\Product;
 
 class Cart
 {
+
     // add product to cart
     public static function add2Cart(int $productId, int $quantity = 1): bool
     {
@@ -13,22 +14,21 @@ class Cart
 
         if (self::hasProductInCart($productId)) {
             session(["cart.{$productId}.quantity" => session("cart.{$productId}.quantity") + $quantity]);
-
-            return true;
-        }
-        $product = Product::query()->find($productId);
-        if ($product) {
-            $new_product = [
-                'title' => $product->title,
-                'slug' => $product->slug,
-                'image' => $product->image,
-                'price' => $product->price,
-                'quantity' => $quantity,
-            ];
-            session(["cart.{$productId}" => $new_product]);
             $added = true;
+        } else {
+            $product = Product::query()->find($productId);
+            if ($product) {
+                $new_product = [
+                    'title' => $product->title,
+                    'slug' => $product->slug,
+                    'image' => $product->image,
+                    'price' => $product->price,
+                    'quantity' => $quantity,
+                ];
+                session(["cart.{$productId}" => $new_product]);
+                $added = true;
+            }
         }
-
         return $added;
     }
 
@@ -36,11 +36,9 @@ class Cart
     public static function removeProductFromCart(int $productId): bool
     {
         if (self::hasProductInCart($productId)) {
-            session()->forget("cart.$productId");
-
+            session()->forget("cart.{$productId}");
             return true;
         }
-
         return false;
     }
 
@@ -60,7 +58,6 @@ class Cart
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
-
         return $total;
     }
 
@@ -74,7 +71,6 @@ class Cart
     public static function getCartQuantityTotal(): int
     {
         $cart = self::getCart();
-
         return array_sum(array_column($cart, 'quantity'));
     }
 

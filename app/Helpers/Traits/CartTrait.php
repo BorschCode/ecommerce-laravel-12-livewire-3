@@ -6,7 +6,6 @@ use App\Helpers\Cart\Cart;
 
 trait CartTrait
 {
-    public const string EVENT_NAME = 'cart-updated';
 
     public int $quantity = 1;
 
@@ -18,23 +17,21 @@ trait CartTrait
         }
         if (Cart::add2Cart($productId, $quantity)) {
             $this->js("toastr.success('Product added to cart successfully')");
-            $this->dispatch(self::EVENT_NAME);
-
-            return;
+            $this->dispatch('cart-updated');
+        } else {
+            $this->js("toastr.error('Oops! Something went wrong!')");
         }
-
-        $this->js("toastr.error('Oops! Something went wrong!')");
     }
 
     public function removeFromCart(int $productId): void
     {
         if (Cart::removeProductFromCart($productId)) {
             $this->js("toastr.success('Product removed from cart successfully')");
-            $this->dispatch(self::EVENT_NAME);
-
-            return;
+            $this->dispatch('cart-updated');
+        } else {
+            $this->js("toastr.error('Oops! Something went wrong!')");
         }
-
-        $this->js("toastr.error('Oops! Something went wrong!')");
     }
+
 }
+

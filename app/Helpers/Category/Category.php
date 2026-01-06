@@ -79,4 +79,19 @@ class Category
         return $ids;
     }
 
+    public static function getBreadcrumbs(int $category_id)
+    {
+        $categories = self::getCategories();
+        $breadcrumbs = [];
+        foreach ($categories as $category) {
+            if (isset($categories[$category_id])) {
+                $breadcrumbs[$categories[$category_id]['slug']] = $categories[$category_id]['title'];
+                $category_id = $categories[$category_id]['parent_id'];
+            } else {
+                break;
+            }
+        }
+        return array_reverse($breadcrumbs);
+    }
+
 }

@@ -126,6 +126,16 @@ img {
     list-style: none;
 }
 
+.update-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .7);
+    z-index: 2;
+    text-align: center;
+    padding-top: 20px;
+}
+
 /* ============================= General rules ============================ */
 .wrapper {
     min-height: 100%;
@@ -222,6 +232,40 @@ ul.social-icons a:hover {
 
 .header-logo:hover {
     color: var(--contrast-color);
+}
+
+.search-form {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    background: #fff;
+    z-index: 1025;
+    width: 100%;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 10px 0;
+}
+
+.search-results a {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: all .3s;
+}
+
+.search-results a:hover {
+    background: #f1f5f9;
+}
+
+.search-empty {
+    position: absolute;
+    right: 50px;
+    top: 8px;
+    z-index: 10;
+    cursor: pointer;
 }
 
 .cart-buttons .btn {
@@ -605,6 +649,18 @@ footer a:hover {
 
 .sidebar .collapse-filters-btn {
     color: var(--contrast-color);
+}
+
+.filter-price {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.selected-filters p {
+    cursor: pointer;
+    margin-bottom: 0;
 }
 
 /* ============================= Category Page ============================ */

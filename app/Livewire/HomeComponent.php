@@ -8,6 +8,7 @@ use Livewire\Component;
 
 class HomeComponent extends Component
 {
+
     use CartTrait;
 
     public function render()

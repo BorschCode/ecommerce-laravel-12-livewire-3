@@ -26,7 +26,7 @@ toastr.options = {
     "debug": false,
     "newestOnTop": false,
     "progressBar": true,
-    "positionClass": "toast-top-right",
+    "positionClass": "toast-bottom-right",
     "preventDuplicates": false,
     "onclick": null,
     "showDuration": "300",
@@ -38,3 +38,7 @@ toastr.options = {
     "showMethod": "slideDown",
     "hideMethod": "slideUp"
 }
+
+window.addEventListener("popstate", function (e) {
+    window.location.reload();
+});

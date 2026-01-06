@@ -1,10 +1,3 @@
-<?php
-/**
- * @var \Livewire\Component $this
- * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Product> $hits_products
- * @var \Illuminate\Database\Eloquent\Collection<\App\Models\Product> $new_products
- */
-?>
 <div>
 
     <div id="carousel" class="carousel slide carousel-fade">
